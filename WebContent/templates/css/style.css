@@ -1,0 +1,55 @@
+body {
+	font-family: tahoma;
+	font-size: 8pt;
+}
+
+#head {
+	margin-top: -2%;
+	color: #D98633;
+	background-color: #000;
+	font-weight: bold;
+}
+
+#logo {
+	margin-top: 5%;
+	width: 50%;
+}
+
+#sidebar-wrapper ul li a {
+	color: #D98633;
+}
+
+#content {
+	margin-top: 3%;
+}
+
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+
+#nem lembro o que faz, melhor deixar, tá funcionando
+.dataGrid .ui-datagrid-column {
+	width: 33.33%;
+	border: none !important;
+}
+
+.ui-datagrid {
+	border: none !important;
+}
+
+.ui-datagrid-content {
+	border: none !important;
+}
+
+
+#tabela table tr {
+	height: 30px;
+}
+
+.ui-datatable .ui-datatable-data .even-row td {
+	background-color: #FFF;
+}
+
+.ui-datatable .ui-datatable-data .odd-row td {
+	background-color: #CCC;
+}

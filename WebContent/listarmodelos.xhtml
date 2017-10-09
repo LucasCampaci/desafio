@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+				<div class="row" id="head">
+					<h1>Listar Modelos</h1>
+				</div>
+				<div class="container-fluid">
+					<p:panel id="panel" style="border:none !important;">
+						<div class="row" id="content">
+							<div class="col-lg-12">
+								<h:form>
+									<p:dataTable id="tabela" var="modelo"
+										emptyMessage="Dados nao encontrados" rows="10"
+										paginator="true" widgetVar="tabela"
+										rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}"
+										rowIndexVar="rowIx" value="#{listarModelo.lista}"
+										style="width:99%">
+										<f:facet name="header">Modelos Cadastrados
+        								<p:commandButton id="toggler" type="button"
+												value="Colunas" style="float:right" icon="ui-icon-search" />
+											<p:columnToggler datasource="tabela" trigger="toggler" />
+										</f:facet>
+										<p:column filterBy="#{modelo.fabricante}"
+											headerText="Fabricante" filterMatchMode="contains">
+										#{modelo.fabricante}
+									</p:column>
+										<p:column filterBy="#{modelo.modelo}" headerText="Modelo"
+											filterMatchMode="contains">
+										#{modelo.modelo}
+									</p:column>
+										<p:column filterBy="#{modelo.flash}" headerText="Flash"
+											filterMatchMode="equals">
+											<f:facet name="filter">
+												<p:selectOneButton onchange="PF('tabela').filter()"
+													style="width:150%;margin-left:-25%">
+													<f:selectItem itemLabel="Todos" itemValue="" />
+													<f:selectItem itemLabel="Sim" itemValue="Sim" />
+													<f:selectItem itemLabel="Não" itemValue="Não" />
+												</p:selectOneButton>
+											</f:facet>
+										#{modelo.flash}
+									</p:column>
+										<p:column headerText="Tela" filterBy="#{modelo.tela}">
+										#{modelo.tela}
+									</p:column>
+										<p:column filterBy="#{modelo.funcionalidades}"
+											headerText="Funcionalidades" filterMatchMode="contains">					
+										#{modelo.funcionalidades}
+									</p:column>
+										<p:column headerText="Imagem">
+											<h:graphicImage value="#{modelo.urlFoto}" style="height:30px"
+												onclick="PF('#{modelo.modelo}').show();" />
+
+											<p:dialog header="#{modelo.modelo}"
+												widgetVar="#{modelo.modelo}" width="500">
+												<h:graphicImage value="#{modelo.urlFoto}" />
+											</p:dialog>
+
+										</p:column>
+										<p:column filterBy="#{modelo.dataLancamento}"
+											headerText="Lancamento" filterMatchMode="contains">					
+										#{modelo.dataLancamento}
+									</p:column>
+										<p:column headerText="Descricao">
+											<p:commandLink id="descricao" value="Visualizar descricao" />
+											<p:overlayPanel for="descricao" hideEffect="fade"
+												style="width:400px" showCloseIcon="true">
+												<p:dataList var="desc" type="definition"
+													value="#{modelo.descricao}">
+													<f:facet name="header">
+        												Descricao
+       												 </f:facet>
+													<p:column headerText="#{modelo.modelo}">
+														<p:outputLabel escape="false" value="#{desc}" />
+													</p:column>
+												</p:dataList>
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Acoes">
+											<p:commandLink value="Editar"
+												onclick="PF('#{modelo.codigo}').show();" />
+											<p:dialog header="Editar: #{modelo.modelo}"
+												widgetVar="#{modelo.codigo}" width="50%" height="400">
+												<h:form id="frm">
+													<p:outputLabel for="fabricante">Selecione o fabricante</p:outputLabel>
+													<p:autoComplete dropdown="true" id="fabricante"
+														value="#{cadastroModelo.modelo.fabricante}"
+														completeMethod="#{cadastroModelo.completaFabricante}"
+														var="fabricante" itemValue="#{fabricante}"
+														itemLabel="#{fabricante.nome}"
+														converter="fabricanteConverter" forceSelection="true"
+														required="true">
+														<f:ajax event="itemSelect" execute="frm:mod" update="mod"
+															render="mod" listener="#{cadastroModelo.setPais}" />
+													</p:autoComplete>
+														&nbsp;&nbsp;&nbsp;
+														<h:outputText id="mod"
+														value="#{cadastroModelo.fabricante.paisOrigem}"></h:outputText>
+													<p:message for="fabricante" />
+													<br />
+													<p:outputLabel for="funcionalidade">Selecione as funcionalidades</p:outputLabel>
+													<h:selectManyCheckbox value="#{cadastroModelo.valuesFuncs}"
+														id="funcionalidade" layout="lineDirection">
+														<f:selectItems value="#{cadastroModelo.funcs}" />
+													</h:selectManyCheckbox>
+													<p:message for="funcionalidade" />
+													<br />
+													<p:outputLabel for="modelo">Nome do modelo</p:outputLabel>
+													<p:inputText id="modelo"
+														value="#{cadastroModelo.modelo.modelo}">
+														<f:validateLength maximum="35" />
+														<p:clientValidator event="keyup" />
+													</p:inputText>
+													<p:message for="modelo" />
+													<br />
+													<p:outputLabel for="descricao">Descricao</p:outputLabel>
+													<p:editor id="descricao"
+														value="#{cadastroModelo.modelo.descricao}" rendered="true"
+														style="width:500px" height="200">
+													</p:editor>
+													<p:message for="modelo" />
+													<br />
+													<p:outputLabel for="flash">Possui Flash?</p:outputLabel>
+													<p:selectOneRadio id="flash"
+														value="#{cadastroModelo.modelo.flash}" required="true">
+														<f:selectItem itemLabel="Sim" itemValue="1" />
+														<f:selectItem itemLabel="Nao" itemValue="0" />
+													</p:selectOneRadio>
+													<p:message for="flash" />
+													<br />
+													<p:outputLabel for="foto">URL da foto</p:outputLabel>
+													<p:inputText id="foto"
+														value="#{cadastroModelo.modelo.urlFoto}">
+													</p:inputText>
+													<p:message for="foto" />
+													<br />
+													<p:outputLabel for="tela">Tamanho da tela</p:outputLabel>
+													<p:inputText id="tela"
+														value="#{cadastroModelo.modelo.tela}" required="true">
+														<f:convertNumber pattern="#.#" />
+														<f:validateLength maximum="3" />
+														<p:clientValidator event="keyup" />
+													</p:inputText>
+													<p:message for="tela" />
+													<br />
+													<p:outputLabel for="data">Data de Lancamento</p:outputLabel>
+													<p:calendar id="data"
+														value="#{cadastroModelo.modelo.dataLancamento}"
+														pattern="dd-MM-yyyy" mask="true" />
+													<p:message for="data" />
+													<br />
+													<p:commandButton value="Salvar"
+														action="#{cadastroModelo.editar(modelo.codigo)}" update="panel"
+														validateClient="true"></p:commandButton>
+												</h:form>
+											</p:dialog>									
+										&nbsp;&nbsp;&nbsp;
+										<p:link value="Excluir"
+												href="/ModeloServlet?codigo=#{modelo.codigo}" />
+										</p:column>
+										<f:facet name="footer">
+											<h:outputText value="Existem " />
+											<h:outputText value="#{fn:length(listarModelo.lista)}" />
+											<h:outputText value=" modelos cadastrados. " />
+										</f:facet>
+									</p:dataTable>
+								</h:form>
+
+							</div>
+						</div>
+					</p:panel>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Insert title here</title>
+</head>
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+				<div class="row" id="head">
+					<h1>Cadastrar Modelo</h1>
+				</div>
+				<div class="container-fluid">
+					<p:panel id="panel" style="border:none !important;">
+						<div class="row" id="content">
+							<h:form id="frm">
+							
+								<p:growl id="growl" showDetail="true" sticky="true" />
+								<div class="col-lg-12">
+
+									<p:outputLabel for="fabricante">Selecione o fabricante</p:outputLabel>
+
+									<p:autoComplete dropdown="true" id="fabricante"
+										value="#{cadastroModelo.modelo.fabricante}"
+										completeMethod="#{cadastroModelo.completaFabricante}"
+										var="fabricante" itemValue="#{fabricante}"  
+										itemLabel="#{fabricante.nome}" converter="fabricanteConverter" 
+										forceSelection="true"
+										required="true">
+										<f:ajax event="itemSelect" execute="frm:mod" update="mod"
+											render="mod" listener="#{cadastroModelo.setPais}" />
+									</p:autoComplete>
+									&nbsp;&nbsp;&nbsp;
+									<h:outputText id="mod"
+										value="#{cadastroModelo.fabricante.paisOrigem}"></h:outputText>
+									<p:message for="fabricante" />
+
+									<br />
+									<p:outputLabel for="funcionalidade">Selecione as funcionalidades</p:outputLabel>
+									<h:selectManyCheckbox value="#{cadastroModelo.valuesFuncs}"
+										id="funcionalidade" layout="lineDirection">
+										<f:selectItems value="#{cadastroModelo.funcs}" />
+									</h:selectManyCheckbox>
+									<p:message for="funcionalidade" />
+									<br />
+									<p:outputLabel for="modelo">Nome do modelo</p:outputLabel>
+									<p:inputText id="modelo"
+										value="#{cadastroModelo.modelo.modelo}">
+										<f:validateLength maximum="35" />
+										<p:clientValidator event="keyup" />
+									</p:inputText>
+									<p:message for="modelo" />
+									<br />
+									<p:outputLabel for="descricao">Descricao</p:outputLabel>
+									<p:editor id="descricao"
+										value="#{cadastroModelo.modelo.descricao}" rendered="true"
+										style="width:500px" height="200">
+									</p:editor>
+									<p:message for="modelo" />
+									<br />
+									<p:outputLabel for="flash">Possui Flash?</p:outputLabel>
+									<p:selectOneRadio id="flash"
+										value="#{cadastroModelo.modelo.flash}" required="true">
+										<f:selectItem itemLabel="Sim" itemValue="1" />
+										<f:selectItem itemLabel="Nao" itemValue="0" />
+									</p:selectOneRadio>
+									<p:message for="flash" />
+									<br />
+									<p:outputLabel for="foto">URL da foto</p:outputLabel>
+									<p:inputText id="foto" value="#{cadastroModelo.modelo.urlFoto}">
+									</p:inputText>
+									<p:message for="foto" />
+									<br />
+									<p:outputLabel for="tela">Tamanho da tela</p:outputLabel>
+									<p:inputText id="tela" value="#{cadastroModelo.modelo.tela}"
+										required="true">
+										<f:convertNumber pattern="#.#" />
+										<f:validateLength maximum="3" />
+										<p:clientValidator event="keyup" />
+									</p:inputText>
+									<p:message for="tela" />
+									<br />
+									<p:outputLabel for="data">Data de Lancamento</p:outputLabel>
+									<p:calendar id="data"
+										value="#{cadastroModelo.modelo.dataLancamento}"
+										pattern="dd-MM-yyyy" mask="true" />
+									<p:message for="data" />
+									<br />
+									<p:commandButton value="Salvar"
+										action="#{cadastroModelo.cadastrar}" update="panel"
+										validateClient="true"></p:commandButton>
+								</div>
+									
+							</h:form>
+						</div>
+				</p:panel>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

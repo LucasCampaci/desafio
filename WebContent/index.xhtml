@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</h:head>
+<h:body>
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+				<div class="row" id="head">
+					<h1>Cadastrar Fabricante</h1>
+				</div>
+				<div class="container-fluid">
+					<p:panel id="panel" style="border:none !important;">
+						<p:growl id="growl" showDetail="true" sticky="true" />
+						<div class="row" id="content">
+							<div class="col-lg-12">
+								<h:form id="frm">
+									<p:outputLabel value="Nome do fabricante"  for="nome" />
+									<p:inputText value="#{cadastroFabricante.fabricante.nome}"
+										id="nome" required="true">
+										<f:validateLength maximum="15" />
+										<p:clientValidator event="keyup" />
+									</p:inputText>
+									<p:message for="nome" />
+									<br />
+									<p:outputLabel value="Pais de origem" for="paisOrigem" />
+									<p:inputText
+										value="#{cadastroFabricante.fabricante.paisOrigem}"
+										id="paisOrigem" required="true">
+										<f:validateLength maximum="15" />
+										<p:clientValidator event="keyup" />
+									</p:inputText>
+									<p:message for="paisOrigem" />
+									<br />
+									<p:commandButton value="Salvar"
+										action="#{cadastroFabricante.cadastrar}" update="panel"
+										validateClient="true"></p:commandButton>
+									<br />
+									<br />
+								</h:form>
+								<p:dataTable id="tabela" var="fabricante"
+									rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}"
+									rowIndexVar="rowIx" value="#{listarFabricante.lista}"
+									style="width:50%">
+									<p:column headerText="Fabricante">
+										#{fabricante.nome}
+									</p:column>
+									<p:column headerText="Pais de Origem">
+										#{fabricante.paisOrigem}
+									</p:column>
+									<p:column headerText="Acoes">
+
+										<p:commandLink value="Editar"
+											onclick="PF('#{fabricante.nome}').show();" />
+
+										<p:dialog header="Editar: #{fabricante.nome}"
+											widgetVar="#{fabricante.nome}" minHeight="40">
+											<h:form>
+
+												<p:outputLabel value="Nome do fabricante" for="nome" />
+												<p:inputText value="#{cadastroFabricante.fabricante.nome}"
+													id="nome" required="true">
+													<f:validateLength maximum="15" />
+													<p:clientValidator event="keyup" />
+												</p:inputText>
+												<p:message for="nome" />
+												<br />
+												<p:outputLabel value="Pais de origem" for="paisOrigem" />
+
+												<p:inputText
+													value="#{cadastroFabricante.fabricante.paisOrigem}"
+													label="#{fabricante.paisOrigem}" id="paisOrigem"
+													required="true">
+													<f:validateLength maximum="15" />
+													<p:clientValidator event="keyup" />
+												</p:inputText>
+												<p:message for="paisOrigem" />
+												<br />
+												<p:commandButton value="Salvar"
+													actionListener="#{cadastroFabricante.editar(fabricante.codigo)}"
+													update="tabela" validateClient="true"></p:commandButton>
+											</h:form>
+										</p:dialog>
+										&nbsp;&nbsp;&nbsp;
+										<p:link value="Excluir"
+											href="/FabricanteServlet?codigo=#{fabricante.codigo}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+						</div>
+					</p:panel>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Insert title here</title>
+</head>
+<h:body>
+	<ui:composition template="templates/template.xhtml">
+		<ui:define name="content">
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+				<div class="row" id="head">
+					<h1>Comparar Modelos</h1>
+				</div>
+				<div class="container-fluid">
+
+					<div class="row" id="content">
+						<div class="col-lg-12">
+							<p:panelGrid columns="3" layout="grid" style="width:95%"  >
+								<h:form id="frm">
+									<p:column>
+										<p:outputLabel>Celular 1</p:outputLabel>
+										<p:autoComplete dropdown="true"
+											value="#{listarModelo.modelo.modelo}"
+											completeMethod="#{listarModelo.completaModelo}" var="modelo"
+											itemLabel="#{modelo.modelo}" itemValue="#{modelo}"
+											forceSelection="true" converter="modeloConverter"
+											required="true">
+											<f:ajax listener="#{listarModelo.buscarComparacao}"
+												execute="frm:mod" render="mod" event="itemSelect" />
+										</p:autoComplete>
+									</p:column>
+
+									<p:dataGrid id="mod" var="modelo"
+										value="#{listarModelo.modelo}">
+										<p:graphicImage value="#{modelo.urlFoto}"
+											style="height:150px;" />
+										<p:outputLabel value="#{modelo.fabricante}" />
+										<p:outputLabel value="#{modelo.modelo}" />
+										<p:outputLabel value="#{modelo.flash}" />
+										<p:outputLabel value="#{modelo.tela}" />
+										<p:outputLabel value="#{modelo.funcionalidades}" />
+									</p:dataGrid>
+								</h:form>
+								<h:form id="frm2">
+									<p:column>
+										<p:outputLabel>Celular 2</p:outputLabel>
+										<p:autoComplete dropdown="true" id="fabricante"
+											value="#{listarModelo.modelo.modelo}"
+											completeMethod="#{listarModelo.completaModelo}" var="modelo"
+											itemLabel="#{modelo.modelo}" itemValue="#{modelo}"
+											forceSelection="true" converter="modeloConverter"
+											required="true">
+											<f:ajax listener="#{listarModelo.buscarComparacao}"
+												execute="frm2:mod" render="mod" event="itemSelect" />
+										</p:autoComplete>
+									</p:column>
+
+									<p:dataGrid id="mod" var="modelo"
+										value="#{listarModelo.modelo}">
+										<p:graphicImage value="#{modelo.urlFoto}"
+											style="height:150px;" />
+										<p:outputLabel value="#{modelo.fabricante}" />
+										<p:outputLabel value="#{modelo.modelo}" />
+										<p:outputLabel value="#{modelo.flash}" />
+										<p:outputLabel value="#{modelo.tela}" />
+										<p:outputLabel value="#{modelo.funcionalidades}" />
+									</p:dataGrid>
+								</h:form>
+								<h:form id="frm3">
+									<p:column>
+										<p:outputLabel>Celular 3</p:outputLabel>
+										<p:autoComplete dropdown="true" id="fabricante"
+											value="#{listarModelo.modelo.modelo}"
+											completeMethod="#{listarModelo.completaModelo}" var="modelo"
+											itemLabel="#{modelo.modelo}" itemValue="#{modelo}"
+											forceSelection="true" converter="modeloConverter"
+											required="true">
+											<f:ajax listener="#{listarModelo.buscarComparacao}"
+												execute="frm3:mod" render="mod" event="itemSelect" />
+										</p:autoComplete>
+									</p:column>
+
+									<p:dataGrid id="mod" var="modelo"
+										value="#{listarModelo.modelo}">
+										<p:graphicImage value="#{modelo.urlFoto}"
+											style="height:150px;" />
+										<p:outputLabel value="#{modelo.fabricante}" />
+										<p:outputLabel value="#{modelo.modelo}" />
+										<p:outputLabel value="#{modelo.flash}" />
+										<p:outputLabel value="#{modelo.tela}" />
+										<p:outputLabel value="#{modelo.funcionalidades}" />
+									</p:dataGrid>
+								</h:form>
+							</p:panelGrid>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
